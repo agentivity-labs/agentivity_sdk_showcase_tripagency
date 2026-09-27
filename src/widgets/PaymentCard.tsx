@@ -29,12 +29,12 @@ export function PaymentCard(props: Record<string, unknown>) {
     setStatus('processing');
     setTimeout(() => {
       setStatus('paid');
-      onSubmit(`Paiement confirmé : ${amount} ${currency} sur la carte se terminant par ${cardLast4}.`);
+      onSubmit(`Payment confirmed: ${amount} ${currency} on the card ending in ${cardLast4}.`);
     }, 700);
   }
 
   return (
-    <ArtifactCard title="Paiement" type="Checkout">
+    <ArtifactCard title="Payment" type="Checkout">
       {lineItems.length > 0 && (
         <div style={{ marginBottom: 10 }}>
           {lineItems.map((item, i) => (
@@ -70,13 +70,13 @@ export function PaymentCard(props: Record<string, unknown>) {
       >
         <span style={{ fontWeight: 700, letterSpacing: '0.04em' }}>VISA</span>
         <span style={{ fontVariantNumeric: 'tabular-nums' }}>•••• {cardLast4}</span>
-        <span style={{ opacity: 0.6 }}>Carte enregistrée</span>
+        <span style={{ opacity: 0.6 }}>Saved card</span>
       </div>
 
       {status === 'paid' ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#10b981', fontSize: 13, fontWeight: 500 }}>
           <span>✓</span>
-          <span>Paiement confirmé</span>
+          <span>Payment confirmed</span>
         </div>
       ) : (
         <button
@@ -96,7 +96,7 @@ export function PaymentCard(props: Record<string, unknown>) {
             opacity: status === 'processing' ? 0.6 : 1,
           }}
         >
-          {status === 'processing' ? 'Paiement en cours…' : `Payer ${amount} ${currency}`}
+          {status === 'processing' ? 'Processing payment…' : `Pay ${amount} ${currency}`}
         </button>
       )}
     </ArtifactCard>
