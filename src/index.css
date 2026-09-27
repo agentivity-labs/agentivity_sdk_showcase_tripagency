@@ -1,3 +1,10 @@
+/* Riviera's own values, used only as the very first paint (before useTheme's effect runs) and as
+   the documented fallback if a token were ever read before JS sets it. Every theme in
+   `theme/themes.ts` — Riviera included — is otherwise applied by `useTheme`, which writes each of
+   `theme.tokens` as an inline custom property on <html>; that always wins over the plain :root
+   rule below, so there is deliberately no per-theme CSS block to keep in sync here (13 SDK presets
+   plus per-preset blocks for a mechanically generated set would mean many near-duplicate blocks)
+   — adding a theme to themes.ts is enough on its own, nothing to touch in this file. */
 :root {
   --ink: #171a1d;
   --ink-soft: #4e5359;
@@ -10,6 +17,12 @@
   --font-display: 'Instrument Serif', serif;
   --font-body: 'Karla', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --hero-sky: linear-gradient(180deg, #14313b 0%, #3c6e63 40%, #c88148 78%, #efb871 100%);
+  --hero-sun: radial-gradient(circle, rgba(255, 235, 196, 0.92) 0%, rgba(255, 225, 170, 0.3) 52%, transparent 74%);
+  --radius-card: 28px;
+  --radius-pill: 999px;
+  --radius-bubble: 16px;
+  --radius-small: 10px;
 
   color-scheme: light;
 }
@@ -29,6 +42,7 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 #root {
@@ -45,4 +59,44 @@ h3 {
 
 button {
   font-family: inherit;
+}
+
+.theme-switcher {
+  display: flex;
+  gap: 6px;
+  max-width: 168px;
+  overflow-x: auto;
+  padding: 2px;
+  /* A visible scrollbar here would fight the chrome around it on every platform differently —
+     the row already reads as scrollable from the swatches trailing off past the edge. */
+  scrollbar-width: none;
+}
+
+.theme-switcher::-webkit-scrollbar {
+  display: none;
+}
+
+.theme-switcher__swatch {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-switcher__swatch:hover {
+  transform: scale(1.08);
+}
+
+.theme-switcher__swatch[data-active] {
+  /* A paper-colored ring plus an ink-colored ring outside it, instead of a single border in one
+     fixed color: with 14 swatches spanning near-black to near-white fills, any single ring color
+     would vanish against at least a couple of them. This two-tone "target" reads against any
+     swatch fill, dark or light, in every theme. */
+  border-color: var(--paper);
+  box-shadow: 0 0 0 2px var(--ink), 0 1px 3px rgba(0, 0, 0, 0.25);
 }

@@ -41,7 +41,7 @@
 
 .cap-primary-lt {
   position: relative;
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   box-shadow: 0 18px 34px -18px rgba(23, 26, 29, 0.35);
   cursor: pointer;
@@ -55,7 +55,8 @@
 .cap-primary-lt .sky {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #14313b 0%, #3c6e63 40%, #c88148 78%, #efb871 100%);
+  background: var(--hero-sky);
+  transition: background 0.25s ease;
 }
 
 .cap-primary-lt .sun {
@@ -66,7 +67,8 @@
   height: 36px;
   border-radius: 50%;
   filter: blur(1px);
-  background: radial-gradient(circle, rgba(255, 235, 196, 0.92) 0%, rgba(255, 225, 170, 0.3) 52%, transparent 74%);
+  background: var(--hero-sun);
+  transition: background 0.25s ease;
 }
 
 .cap-primary-lt .body {
@@ -85,10 +87,13 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  /* Deliberately not theme-tied, unlike the rest of this file: this badge always sits on the
+     hero photo/gradient (dark at the top in every theme), never on the app's own paper/ink
+     surfaces, so it keeps one fixed frosted-glass look regardless of the active theme. */
   background: rgba(255, 255, 255, 0.9);
-  color: var(--ink);
+  color: #171a1d;
   padding: 4px 9px;
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   margin-bottom: auto;
 }
 
@@ -109,9 +114,13 @@
 }
 
 .cap-cta {
+  /* var(--ink)/var(--paper) rather than a literal dark-bg/white-text pair: ink is the theme's
+     dominant "solid" color and paper its dominant "background" color, so this stays a
+     high-contrast solid button in both a light theme (dark pill, light text) and a dark one
+     (light pill, dark text) without a separate button-specific token pair. */
   background: var(--ink);
-  color: #fff;
-  border-radius: 30px;
+  color: var(--paper);
+  border-radius: var(--radius-pill);
   padding: 13px 18px;
   font-weight: 700;
   font-size: 12.5px;
@@ -167,6 +176,6 @@
   color: var(--ink-dim);
   background: var(--paper-soft);
   padding: 5px 8px;
-  border-radius: 10px;
+  border-radius: var(--radius-small);
   white-space: nowrap;
 }
