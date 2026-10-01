@@ -11,6 +11,7 @@ import {
   teamHubMemberId,
   teamMembersFromStructure,
   useAgentivityClient,
+  useExecutionStatuses,
   useRunStream,
   type AgUiConnectionState,
   type ChatHilGate,
@@ -100,6 +101,8 @@ export function TripChat({
 
   const controller = useMemo(() => new ChatController({ contextId: TRIP_TEAM_ID }), []);
   const { events, connectionState } = useRunStream(streamUrl);
+  // Who is working / done comes from the execution's own inspector, not from stream events (which are not replayed).
+  const { members: memberStatuses, running } = useExecutionStatuses(executionId, { controller });
 
   useEffect(() => {
     events.forEach(controller.feedEvent);
@@ -115,6 +118,17 @@ export function TripChat({
       const session = await retryWithBackoff(() => client.runs.startExecution({ entityId: TRIP_TEAM_ID, input: text, executionId, enableHil: true }));
       onExecutionStarted(session.executionId);
       setStreamUrl(session.streamUrl);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  }
+
+  // The chat input's stop button: cancels the execution that is working. A failure surfaces below, the button stays available.
+  async function handleStop() {
+    if (!executionId) return;
+    setError(undefined);
+    try {
+      await client.runs.cancelExecution(executionId);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     }
@@ -158,7 +172,7 @@ export function TripChat({
             <p className="riviera-eyebrow">New trip</p>
             <h1 className="riviera-title">Tell me what you have in mind</h1>
           </div>
-          <TeamRoster controller={controller} members={members} />
+          <TeamRoster controller={controller} members={members} statuses={memberStatuses} />
         </div>
 
         <div className="riviera-chat-pane">
@@ -168,6 +182,8 @@ export function TripChat({
           onSend={(text) => void handleSend(text)}
           onHilResponse={(gate, text, source) => handleHilResponse(gate, text, source)}
           widgetRegistry={widgetRegistry}
+          running={running}
+          onStop={executionId ? () => handleStop() : undefined}
           showActiveMemberIndicator
           showSpeakerLabels
           resolveMemberAvatar={resolveAvatar}
@@ -185,7 +201,7 @@ export function TripChat({
 
         {teamScreen && (
           <div className="riviera-team-inline">
-            <TeamGraph controller={controller} members={members} hubMemberId={hubMemberId} />
+            <TeamGraph controller={controller} members={members} hubMemberId={hubMemberId} statuses={memberStatuses} />
           </div>
         )}
 
@@ -213,7 +229,7 @@ export function TripChat({
           <aside className="riviera-team-dock" data-open={teamAside} aria-label="Your team" aria-hidden={!teamAside} inert={!teamAside}>
             <div className="riviera-team-dock__content">
               <p className="riviera-eyebrow">Your team</p>
-              <TeamGraph controller={controller} members={members} hubMemberId={hubMemberId} />
+              <TeamGraph controller={controller} members={members} hubMemberId={hubMemberId} statuses={memberStatuses} />
             </div>
           </aside>
         )}
