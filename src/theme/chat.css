@@ -398,7 +398,9 @@
 .ag-chat-input {
   border: none;
   background: var(--paper-soft);
-  border-radius: var(--radius-pill);
+  /* A composer holds a message, attachment chips and buttons — a full pill reads as a search field
+     and gets lumpy once it grows; a softly rounded box fits what it contains. */
+  border-radius: var(--radius-bubble);
   padding: 6px 6px 6px 16px;
 }
 
@@ -423,7 +425,11 @@
   color: var(--paper);
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: var(--radius-small);
+}
+
+.ag-chat-input__chip {
+  border-radius: var(--radius-small);
 }
 
 .ag-chat-input__icon-button {
