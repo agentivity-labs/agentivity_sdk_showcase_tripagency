@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type KeyboardEvent, type PointerEvent } from 'react';
 import {
   ChatController,
   ChatDiscussion,
@@ -49,6 +49,8 @@ export function TripChat({
   onThemeChange: (id: string) => void;
 }) {
   const client = useAgentivityClient();
+  // An unreachable server is said by the connection notice (with its countdown), not by a generic error line.
+  const online = useSyncExternalStore(client.connection.subscribe, client.connection.getSnapshot).status === 'online';
   const [streamUrl, setStreamUrl] = useState<string>();
   const [error, setError] = useState<string>();
   // Below the desktop breakpoint the card shows either the chat or the team; on desktop the team sits beside it (see chat.css).
@@ -206,7 +208,7 @@ export function TripChat({
         )}
 
         {streamUrl && <ConnectionStatusBanner state={connectionState} renderMessage={connectionMessage} />}
-        {error && <p style={{ fontSize: 11, color: 'var(--coral)', padding: '0 20px 12px' }}>{error}</p>}
+        {error && online && <p style={{ fontSize: 11, color: 'var(--coral)', padding: '0 20px 12px' }}>{error}</p>}
         </div>
 
         {layout !== 'mobile' && (
