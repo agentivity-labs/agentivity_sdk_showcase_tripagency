@@ -6,6 +6,7 @@ import {
   TeamGraph,
   TeamRoster,
   buildArtifactsBundle,
+  displayWidget,
   retryWithBackoff,
   teamAvatarResolver,
   teamHubMemberId,
@@ -32,7 +33,8 @@ function connectionMessage(state: AgUiConnectionState, secondsLeft: number | und
 const widgetRegistry = buildArtifactsBundle({
   PaymentCard: (props) => <PaymentCard {...props} />,
   HotelChoice: (props) => <HotelChoice {...props} />,
-  TripCover: (props) => <TripCover {...props} />,
+  // Shows the trip, asks nothing: it stays in full colour once the conversation moves on.
+  TripCover: displayWidget((props) => <TripCover {...props} />),
 });
 
 export function TripChat({
