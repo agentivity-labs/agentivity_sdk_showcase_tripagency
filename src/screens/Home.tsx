@@ -1,9 +1,11 @@
 import { ThemeSwitcher } from '../theme/ThemeSwitcher';
+import { TripWait } from '../widgets/TripWait';
 
 export function Home({ onStart, activeThemeId, onThemeChange }: { onStart: () => void; activeThemeId: string; onThemeChange: (id: string) => void }) {
   return (
     <div className="riviera-shell">
       <div className="riviera-card">
+        <TripWait />
         <div className="riviera-card__scroll">
           <div className="appbar">
             <div className="greet">

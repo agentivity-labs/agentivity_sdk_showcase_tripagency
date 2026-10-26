@@ -17,7 +17,8 @@ export default function App() {
   const { theme, setThemeId } = useTheme();
 
   return (
-    <AgentivityProvider baseUrl={baseUrl}>
+    // The wait is shown inside the card, in Riviera's words (TripWait), rather than over the page.
+    <AgentivityProvider baseUrl={baseUrl} waitNotice={false}>
       <ArtifactsThemeProvider theme={theme.artifactsTheme}>
         {screen === 'home' && (
           <Home

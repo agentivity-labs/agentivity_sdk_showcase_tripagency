@@ -24,6 +24,7 @@ import { ThemeSwitcher } from '../theme/ThemeSwitcher';
 import { PaymentCard } from '../widgets/PaymentCard';
 import { HotelChoice } from '../widgets/HotelChoice';
 import { TripCover } from '../widgets/TripCover';
+import { TripWait } from '../widgets/TripWait';
 
 function connectionMessage(state: AgUiConnectionState, secondsLeft: number | undefined) {
   if (state.status === 'connecting') return 'Connecting…';
@@ -157,6 +158,7 @@ export function TripChat({
       style={{ ['--dock-w' as string]: `${dockWidth}px` }}
     >
       <div ref={cardRef} className={`riviera-card${teamScreen ? ' riviera-card--team' : ''}`}>
+        <TripWait />
         <div className="riviera-card__main">
         <div className="riviera-card__header" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

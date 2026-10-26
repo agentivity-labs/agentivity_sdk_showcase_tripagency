@@ -20,6 +20,7 @@
 }
 
 .riviera-card {
+  position: relative;
   width: 100%;
   max-width: 420px;
   height: var(--riviera-h);
@@ -434,4 +435,28 @@
 
 .ag-chat-input__icon-button {
   color: var(--ink-dim);
+}
+
+/* "One moment…" while a call waits (TripWait): floats in the card, under its header, in Riviera's paper and coral. */
+.riviera-wait {
+  position: absolute;
+  top: 144px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  pointer-events: none;
+}
+
+.riviera-wait .ag-wait {
+  pointer-events: auto;
+  --ag-surface: var(--paper);
+  --ag-primary: var(--coral);
+  --ag-wait-track: var(--line);
+  color: var(--ink);
+  font-family: var(--font-body);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 12px 28px -14px rgba(23, 26, 29, 0.35);
 }
