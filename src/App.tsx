@@ -8,6 +8,8 @@ import { Home } from './screens/Home';
 import { TripChat } from './screens/TripChat';
 
 const baseUrl = import.meta.env.VITE_AGENTIVITY_BASE_URL;
+// A demo App of the instance (its id): each browser gets an anonymous visitor of its own, with their own conversations.
+const demoAppId = (import.meta.env.VITE_AGENTIVITY_DEMO_APP as string | undefined) || undefined;
 
 type Screen = 'home' | 'chat';
 
@@ -18,7 +20,7 @@ export default function App() {
 
   return (
     // The wait is shown inside the card, in Riviera's words (TripWait), rather than over the page.
-    <AgentivityProvider baseUrl={baseUrl} waitNotice={false}>
+    <AgentivityProvider baseUrl={baseUrl} demoAppId={demoAppId} waitNotice={false}>
       <ArtifactsThemeProvider theme={theme.artifactsTheme}>
         {screen === 'home' && (
           <Home
